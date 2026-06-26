@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniNodeNews — Updates, Releases & More</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="url(#logoGrad)" stroke-width="2.5"/>
+                        <circle cx="16" cy="16" r="5" fill="url(#logoGrad)"/>
+                        <line x1="16" y1="2" x2="16" y2="10" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="16" y1="22" x2="16" y2="30" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="2" y1="16" x2="10" y2="16" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="22" y1="16" x2="30" y2="16" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
+                                <stop offset="0%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#06b6d4"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">OmniNode<span class="logo-accent">News</span></span>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#releases" class="nav-link">Releases</a>
+                <a href="#repos" class="nav-link">Repositories</a>
+                <a href="#activity" class="nav-link">Activity</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <a href="https://github.com/OmniNodeCo" target="_blank" class="btn btn-primary btn-sm">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span>
+                    Live from GitHub
+                </div>
+                <h1 class="hero-title">
+                    Stay Updated with
+                    <span class="gradient-text">OmniNodeCo</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Real-time news, releases, and updates from OmniNodeCo's open source projects. 
+                    Track commits, releases, and repository activity — all in one place.
+                </p>
+                <div class="hero-actions">
+                    <a href="#releases" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket"></i> Latest Releases
+                    </a>
+                    <a href="#repos" class="btn btn-outline btn-lg">
+                        <i class="fas fa-code-branch"></i> Explore Repos
+                    </a>
+                </div>
+                <div class="hero-stats" id="heroStats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="statRepos">—</span>
+                        <span class="stat-label">Repositories</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="statStars">—</span>
+                        <span class="stat-label">Total Stars</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="statForks">—</span>
+                        <span class="stat-label">Total Forks</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="statFollowers">—</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">omninode — live feed</span>
+                    </div>
+                    <div class="terminal-body" id="terminalBody">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">$</span>
+                            <span class="terminal-typing" id="terminalTyping">fetching latest updates...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Latest Releases Section -->
+    <section class="section" id="releases">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-tag"></i> Releases
+                </div>
+                <h2 class="section-title">Latest Releases</h2>
+                <p class="section-subtitle">Recent version releases and updates across all repositories</p>
+            </div>
+
+            <div class="releases-grid" id="releasesGrid">
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+            </div>
+
+            <div class="empty-state hidden" id="releasesEmpty">
+                <i class="fas fa-box-open"></i>
+                <h3>No Releases Yet</h3>
+                <p>When OmniNodeCo publishes releases, they'll appear here.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Repositories Section -->
+    <section class="section section-alt" id="repos">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-folder-open"></i> Repositories
+                </div>
+                <h2 class="section-title">Open Source Projects</h2>
+                <p class="section-subtitle">Explore all public repositories from OmniNodeCo</p>
+            </div>
+
+            <div class="filter-bar" id="filterBar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="repoSearch" placeholder="Search repositories..." autocomplete="off">
+                </div>
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="recent">Recently Updated</button>
+                    <button class="chip" data-filter="stars">Most Stars</button>
+                    <button class="chip" data-filter="forks">Most Forks</button>
+                </div>
+            </div>
+
+            <div class="repos-grid" id="reposGrid">
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                </div>
+            </div>
+
+            <div class="empty-state hidden" id="reposEmpty">
+                <i class="fas fa-search"></i>
+                <h3>No Repositories Found</h3>
+                <p>Try adjusting your search or filter criteria.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Activity Section -->
+    <section class="section" id="activity">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-bolt"></i> Activity
+                </div>
+                <h2 class="section-title">Recent Activity</h2>
+                <p class="section-subtitle">Latest commits, issues, and events</p>
+            </div>
+
+            <div class="activity-layout">
+                <div class="activity-timeline" id="activityTimeline">
+                    <div class="skeleton-card" aria-hidden="true">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-card" aria-hidden="true">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-card" aria-hidden="true">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-card" aria-hidden="true">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                    </div>
+                    <div class="skeleton-card" aria-hidden="true">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                    </div>
+                </div>
+
+                <aside class="activity-sidebar">
+                    <div class="sidebar-card" id="profileCard">
+                        <div class="profile-header">
+                            <div class="skeleton skeleton-avatar"></div>
+                            <div>
+                                <div class="skeleton skeleton-title"></div>
+                                <div class="skeleton skeleton-text short"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-chart-pie"></i> Language Breakdown
+                        </h3>
+                        <div class="language-chart" id="languageChart">
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text short"></div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-link"></i> Quick Links
+                        </h3>
+                        <div class="quick-links">
+                            <a href="https://github.com/OmniNodeCo" target="_blank" class="quick-link">
+                                <i class="fab fa-github"></i> GitHub Profile
+                            </a>
+                            <a href="https://github.com/orgs/OmniNodeCo/repositories" target="_blank" class="quick-link">
+                                <i class="fas fa-book"></i> All Repos
+                            </a>
+                            <a href="https://github.com/OmniNodeCo?tab=followers" target="_blank" class="quick-link">
+                                <i class="fas fa-users"></i> Followers
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="empty-state hidden" id="activityEmpty">
+                <i class="fas fa-clock"></i>
+                <h3>No Recent Activity</h3>
+                <p>Check back soon for the latest updates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter / About Section -->
+    <section class="section section-alt" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <div class="section-badge">
+                        <i class="fas fa-info-circle"></i> About
+                    </div>
+                    <h2 class="section-title">About OmniNodeNews</h2>
+                    <p class="about-text">
+                        OmniNodeNews is a community-driven dashboard that tracks and displays 
+                        real-time updates from OmniNodeCo's GitHub organization. Stay informed 
+                        about new releases, repository changes, and project developments.
+                    </p>
+                    <ul class="feature-list">
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
+                            <div>
+                                <strong>Real-Time Updates</strong>
+                                <p>Data fetched directly from GitHub's API</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                            <div>
+                                <strong>Release Tracking</strong>
+                                <p>Never miss a new version or update</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                            <div>
+                                <strong>Activity Monitoring</strong>
+                                <p>Track commits, issues, and pull requests</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                            <div>
+                                <strong>Dark & Light Themes</strong>
+                                <p>Choose the theme that suits you</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="about-visual">
+                    <div class="contribution-card">
+                        <h3><i class="fas fa-heart"></i> Contribute</h3>
+                        <p>Want to contribute to OmniNodeCo's projects? Check out the repositories 
+                           and find something that interests you!</p>
+                        <a href="https://github.com/OmniNodeCo" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-github"></i> Visit OmniNodeCo
+                        </a>
+                    </div>
+                    <div class="tech-stack-card">
+                        <h3><i class="fas fa-layer-group"></i> Built With</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">GitHub API</span>
+                            <span class="tech-tag">Font Awesome</span>
+                            <span class="tech-tag">Google Fonts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">
+                        <div class="logo-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <circle cx="16" cy="16" r="14" stroke="url(#logoGrad2)" stroke-width="2.5"/>
+                                <circle cx="16" cy="16" r="5" fill="url(#logoGrad2)"/>
+                                <line x1="16" y1="2" x2="16" y2="10" stroke="url(#logoGrad2)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="16" y1="22" x2="16" y2="30" stroke="url(#logoGrad2)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="2" y1="16" x2="10" y2="16" stroke="url(#logoGrad2)" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="22" y1="16" x2="30" y2="16" stroke="url(#logoGrad2)" stroke-width="2" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="logoGrad2" x1="0" y1="0" x2="32" y2="32">
+                                        <stop offset="0%" stop-color="#6366f1"/>
+                                        <stop offset="100%" stop-color="#06b6d4"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span class="logo-text">OmniNode<span class="logo-accent">News</span></span>
+                    </a>
+                    <p class="footer-desc">Tracking updates and releases from OmniNodeCo's GitHub projects.</p>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#releases">Releases</a></li>
+                        <li><a href="#repos">Repositories</a></li>
+                        <li><a href="#activity">Activity</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/OmniNodeCo" target="_blank">GitHub</a></li>
+                        <li><a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/OmniNodeCo" target="_blank" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> OmniNodeNews. Data sourced from GitHub. Not affiliated with GitHub, Inc.</p>
+                <p class="footer-refresh">
+                    <i class="fas fa-sync-alt"></i> Last refreshed: <span id="lastRefresh">—</span>
+                    <button class="btn-text" id="refreshBtn" title="Refresh data">
+                        <i class="fas fa-redo"></i> Refresh
+                    </button>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
