@@ -1,0 +1,8 @@
+/* This file covers section-specific overrides and utility styles */
+
+/* Releases section extra */
+.releases-grid .release-card:first-child { border-color: rgba(99,102,241,0.3); }
+.releases-grid .release-card:first-child::before { opacity: 1; }
+
+/* Repo card interactivity */
+.repo-card .repo-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }

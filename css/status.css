@@ -1,0 +1,8 @@
+.status-section { padding: var(--space-md) 0; }
+.status-bar { display: flex; align-items: center; gap: var(--space-xl); padding: var(--space-md) var(--space-xl); background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow-x: auto; flex-wrap: wrap; }
+.status-item { display: flex; align-items: center; gap: var(--space-sm); font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; }
+.status-item i { font-size: 0.85rem; }
+.status-item .fa-circle-check { color: #10b981; }
+.status-item .fa-circle-xmark { color: #ef4444; }
+.status-item .fa-gauge { color: #06b6d4; }
+.status-item .fa-clock { color: #f59e0b; }

@@ -1,0 +1,12 @@
+.contributors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-lg); }
+.contributor-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center; transition: all var(--transition); }
+.contributor-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.contributor-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto var(--space-md); border: 3px solid var(--border-color); transition: border-color var(--transition); }
+.contributor-card:hover .contributor-avatar { border-color: #6366f1; }
+.contributor-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+.contributor-name a:hover { color: #6366f1; }
+.contributor-count { font-size: 0.78rem; color: var(--text-tertiary); margin-bottom: var(--space-sm); }
+.contributor-bar { height: 4px; background: var(--bg-tertiary); border-radius: var(--radius-full); overflow: hidden; }
+.contributor-bar-fill { height: 100%; background: var(--gradient-primary); border-radius: var(--radius-full); transition: width var(--transition); }
+.contrib-skeleton { text-align: center; }
+.contrib-skeleton .skeleton-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto var(--space-md); }

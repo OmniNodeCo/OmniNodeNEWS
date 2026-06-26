@@ -1,0 +1,16 @@
+.cmd-overlay { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: flex-start; justify-content: center; padding-top: 20vh; opacity: 0; visibility: hidden; transition: all 0.2s ease; }
+.cmd-overlay.open { opacity: 1; visibility: visible; }
+.cmd-palette { width: 100%; max-width: 560px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; transform: translateY(-10px) scale(0.98); transition: transform 0.2s ease; }
+.cmd-overlay.open .cmd-palette { transform: translateY(0) scale(1); }
+.cmd-input-wrap { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border-color); }
+.cmd-input-wrap i { color: var(--text-tertiary); font-size: 1rem; }
+.cmd-input-wrap input { flex: 1; background: none; border: none; font-family: var(--font-main); font-size: 1rem; color: var(--text-primary); outline: none; }
+.cmd-input-wrap input::placeholder { color: var(--text-tertiary); }
+.cmd-input-wrap kbd { font-family: var(--font-mono); font-size: 0.68rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); padding: 2px 6px; border-radius: 4px; color: var(--text-tertiary); }
+.cmd-results { max-height: 360px; overflow-y: auto; padding: var(--space-sm); }
+.cmd-group { margin-bottom: var(--space-sm); }
+.cmd-group-title { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-tertiary); padding: var(--space-sm) var(--space-md); }
+.cmd-item { display: flex; align-items: center; gap: var(--space-md); width: 100%; padding: var(--space-sm) var(--space-md); border: none; background: none; border-radius: var(--radius-md); font-family: var(--font-main); font-size: 0.88rem; color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); text-align: left; }
+.cmd-item i { width: 20px; text-align: center; color: var(--text-tertiary); }
+.cmd-item:hover, .cmd-item.selected { background: var(--bg-tertiary); color: var(--text-primary); }
+.cmd-item:hover i, .cmd-item.selected i { color: #6366f1; }
