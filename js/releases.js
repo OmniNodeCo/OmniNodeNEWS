@@ -5,22 +5,32 @@
 async function renderReleases(repos) {
     const grid = $('#releasesGrid');
     const empty = $('#releasesEmpty');
-    const reposToCheck = repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)).slice(0, 15);
+    if (!grid || !empty) return;
+
+    const reposToCheck = [...repos]
+        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+        .slice(0, 15);
 
     const results = await Promise.all(reposToCheck.map(async repo => {
         try {
-            const releases = await fetchJSON(`${API_BASE}/repos/${GITHUB_ORG}/${repo.name}/releases?per_page=3`);
+            const releases = await fetchJSON(
+                `${API_BASE}/repos/${GITHUB_ORG}/${repo.name}/releases?per_page=3`
+            );
             return releases.map(r => ({ ...r, repoName: repo.name, repoUrl: repo.html_url }));
         } catch { return []; }
     }));
 
-    AppState.releases = results.flat().sort((a, b) => new Date(b.published_at || b.created_at) - new Date(a.published_at || a.created_at));
+    AppState.releases = results.flat().sort((a, b) =>
+        new Date(b.published_at || b.created_at) - new Date(a.published_at || a.created_at)
+    );
 
     if (!AppState.releases.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
     empty.classList.add('hidden');
 
     grid.innerHTML = AppState.releases.slice(0, 9).map(r => {
-        const body = r.body ? r.body.substring(0, 180).replace(/[#*`]/g, '') + (r.body.length > 180 ? '...' : '') : 'No release notes.';
+        const body = r.body
+            ? r.body.substring(0, 180).replace(/[#*`]/g, '') + (r.body.length > 180 ? '...' : '')
+            : 'No release notes.';
         return `
         <div class="release-card">
             <div class="release-header">
@@ -36,3 +46,5 @@ async function renderReleases(repos) {
         </div>`;
     }).join('');
 }
+
+window.renderReleases = renderReleases;

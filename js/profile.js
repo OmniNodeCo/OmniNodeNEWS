@@ -4,6 +4,7 @@
 
 function renderProfile(profile) {
     const card = $('#profileCard');
+    if (!card) return;
     const name = profile.name || profile.login || GITHUB_ORG;
     const bio = profile.bio || profile.description || 'Open source on GitHub.';
     let details = '';
@@ -35,12 +36,17 @@ function renderHeroStats(profile, repos) {
 
 function renderLanguageChart(repos) {
     const container = $('#languageChart');
+    if (!container) return;
     const counts = {};
     repos.forEach(r => { if (r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     if (!total) { container.innerHTML = '<p style="color:var(--text-tertiary);font-size:0.82rem;">No data.</p>'; return; }
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
     container.innerHTML = `
-        <div class="language-bar">${sorted.map(([l, c]) => `<div class="language-bar-segment" style="width:${(c/total*100)}%;background:${getLanguageColor(l)}" title="${l}: ${(c/total*100).toFixed(1)}%"></div>`).join('')}</div>
-        <div class="language-list">${sorted.map(([l, c]) => `<div class="language-item"><span class="language-item-info"><span class="language-item-dot" style="background:${getLanguageColor(l)}"></span>${escapeHtml(l)}</span><span class="language-item-pct">${(c/total*100).toFixed(1)}%</span></div>`).join('')}</div>`;
+        <div class="language-bar">${sorted.map(([l, c]) => `<div class="language-bar-segment" style="width:${(c / total * 100)}%;background:${getLanguageColor(l)}" title="${l}: ${(c / total * 100).toFixed(1)}%"></div>`).join('')}</div>
+        <div class="language-list">${sorted.map(([l, c]) => `<div class="language-item"><span class="language-item-info"><span class="language-item-dot" style="background:${getLanguageColor(l)}"></span>${escapeHtml(l)}</span><span class="language-item-pct">${(c / total * 100).toFixed(1)}%</span></div>`).join('')}</div>`;
 }
+
+window.renderProfile = renderProfile;
+window.renderHeroStats = renderHeroStats;
+window.renderLanguageChart = renderLanguageChart;

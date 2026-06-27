@@ -5,6 +5,7 @@
 function initReadmeModal() {
     const overlay = $('#readmeOverlay');
     const closeBtn = $('#readmeClose');
+    if (!overlay || !closeBtn) return;
 
     closeBtn.addEventListener('click', closeReadme);
     overlay.addEventListener('click', (e) => {
@@ -20,6 +21,7 @@ async function openReadme(repoName) {
     const body = $('#readmeBody');
     const nameEl = $('#readmeRepoName');
     const ghLink = $('#readmeGhLink');
+    if (!overlay || !body || !nameEl || !ghLink) return;
 
     nameEl.textContent = `${repoName} / README.md`;
     ghLink.href = `https://github.com/${GITHUB_ORG}/${repoName}`;
@@ -36,5 +38,10 @@ async function openReadme(repoName) {
 }
 
 function closeReadme() {
-    $('#readmeOverlay').classList.remove('open');
+    const overlay = $('#readmeOverlay');
+    if (overlay) overlay.classList.remove('open');
 }
+
+window.initReadmeModal = initReadmeModal;
+window.openReadme = openReadme;
+window.closeReadme = closeReadme;

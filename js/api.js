@@ -14,6 +14,7 @@ const AppState = {
     isOrg: true,
     refreshInterval: null,
     refreshMinutes: 5,
+    _countdownInterval: null,
 };
 
 function getHeaders() {
@@ -29,12 +30,20 @@ async function fetchJSON(url) {
     return res.json();
 }
 
+function safeCall(fnName, ...args) {
+    if (typeof window[fnName] === 'function') {
+        return window[fnName](...args);
+    } else {
+        console.warn(`safeCall: ${fnName} is not defined`);
+        return Promise.resolve();
+    }
+}
+
 async function fetchAllData() {
     showToast('Fetching data from GitHub...', 'info');
-    updateTerminalLoading();
+    safeCall('updateTerminalLoading');
 
     try {
-        // Profile
         try {
             AppState.profile = await fetchJSON(`${API_BASE}/orgs/${GITHUB_ORG}`);
             AppState.isOrg = true;
@@ -43,11 +52,12 @@ async function fetchAllData() {
             AppState.isOrg = false;
         }
 
-        // Repos (paginated)
         const type = AppState.isOrg ? 'orgs' : 'users';
         let repos = [], page = 1;
         while (true) {
-            const batch = await fetchJSON(`${API_BASE}/${type}/${GITHUB_ORG}/repos?per_page=100&page=${page}&sort=updated`);
+            const batch = await fetchJSON(
+                `${API_BASE}/${type}/${GITHUB_ORG}/repos?per_page=100&page=${page}&sort=updated`
+            );
             if (!batch.length) break;
             repos = repos.concat(batch);
             if (batch.length < 100) break;
@@ -55,31 +65,33 @@ async function fetchAllData() {
         }
         AppState.repos = repos;
 
-        // Events
         try {
-            AppState.events = await fetchJSON(`${API_BASE}/${type}/${GITHUB_ORG}/events?per_page=30`);
-        } catch { AppState.events = []; }
+            AppState.events = await fetchJSON(
+                `${API_BASE}/${type}/${GITHUB_ORG}/events?per_page=30`
+            );
+        } catch {
+            AppState.events = [];
+        }
 
-        // Render everything
-        renderProfile(AppState.profile);
-        renderHeroStats(AppState.profile, repos);
-        renderRepos();
-        await renderReleases(repos);
-        renderActivity(AppState.events);
-        renderLanguageChart(repos);
-        renderHeatmap(AppState.events);
-        await renderContributors(repos);
-        updateTerminalSuccess(repos, AppState.events);
-        updateTicker(AppState.events);
-        updateStatusBar(repos);
+        safeCall('renderProfile', AppState.profile);
+        safeCall('renderHeroStats', AppState.profile, repos);
+        safeCall('renderRepos');
+        await safeCall('renderReleases', repos);
+        safeCall('renderActivity', AppState.events);
+        safeCall('renderLanguageChart', repos);
+        safeCall('renderHeatmap', AppState.events);
+        await safeCall('renderContributors', repos);
+        safeCall('updateTerminalSuccess', repos, AppState.events);
+        safeCall('updateTicker', AppState.events);
+        safeCall('updateStatusBar', repos);
         updateLastRefresh();
         checkRateLimit();
 
         showToast('Data loaded successfully!', 'success');
     } catch (err) {
         console.error('Fetch error:', err);
-        showToast('Failed to fetch data: ' + err.message, 'error');
-        updateTerminalError(err.message);
+        showToast('Failed to fetch: ' + err.message, 'error');
+        safeCall('updateTerminalError', err.message);
     }
 }
 
@@ -87,10 +99,14 @@ async function checkRateLimit() {
     try {
         const data = await fetchJSON(`${API_BASE}/rate_limit`);
         const core = data.resources.core;
-        const pct = ((core.limit - core.remaining) / core.limit) * 100;
-        $('#rateBarFill').style.width = `${100 - pct}%`;
-        $('#rateLimitText').textContent = `${core.remaining} / ${core.limit}`;
-        $('#statusRate').innerHTML = `<i class="fas fa-gauge"></i> Rate: ${core.remaining}/${core.limit}`;
+        const used = core.limit - core.remaining;
+        const pct = (used / core.limit) * 100;
+        const fill = $('#rateBarFill');
+        const text = $('#rateLimitText');
+        const status = $('#statusRate');
+        if (fill) fill.style.width = `${100 - pct}%`;
+        if (text) text.textContent = `${core.remaining} / ${core.limit}`;
+        if (status) status.innerHTML = `<i class="fas fa-gauge"></i> Rate: ${core.remaining}/${core.limit}`;
     } catch {}
 }
 
@@ -98,9 +114,14 @@ function updateLastRefresh() {
     const now = new Date();
     const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const date = now.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    $('#lastRefresh').textContent = `${date} at ${time}`;
+    const el = $('#lastRefresh');
+    if (el) el.textContent = `${date} at ${time}`;
 }
 
 function updateStatusBar(repos) {
-    $('#statusRepos').innerHTML = `<i class="fas fa-circle-check"></i> ${repos.length} repos loaded`;
+    const el = $('#statusRepos');
+    if (el) el.innerHTML = `<i class="fas fa-circle-check"></i> ${repos.length} repos loaded`;
 }
+
+window.fetchAllData = fetchAllData;
+window.updateStatusBar = updateStatusBar;

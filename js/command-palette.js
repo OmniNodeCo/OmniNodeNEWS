@@ -6,10 +6,17 @@ function initCommandPalette() {
     const overlay = $('#cmdOverlay');
     const input = $('#cmdInput');
     const results = $('#cmdResults');
+    if (!overlay || !input || !results) return;
 
-    // Open/close
-    const open = () => { overlay.classList.add('open'); input.value = ''; input.focus(); renderCmdResults(''); };
-    const close = () => { overlay.classList.remove('open'); };
+    const open = () => {
+        overlay.classList.add('open');
+        input.value = '';
+        input.focus();
+        renderCmdResults('');
+    };
+    const close = () => {
+        overlay.classList.remove('open');
+    };
 
     $('#cmdPaletteBtn').addEventListener('click', open);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
@@ -19,10 +26,8 @@ function initCommandPalette() {
         if (e.key === 'Escape' && overlay.classList.contains('open')) close();
     });
 
-    // Search
     input.addEventListener('input', () => renderCmdResults(input.value));
 
-    // Actions
     results.addEventListener('click', (e) => {
         const item = e.target.closest('.cmd-item');
         if (!item) return;
@@ -44,11 +49,11 @@ function initCommandPalette() {
 
 function renderCmdResults(query) {
     const results = $('#cmdResults');
+    if (!results) return;
     const q = query.toLowerCase().trim();
 
     let html = '';
 
-    // Actions
     const actions = [
         { action: 'toggle-theme', icon: 'fas fa-palette', label: 'Toggle Theme' },
         { action: 'go-releases', icon: 'fas fa-tag', label: 'Go to Releases' },
@@ -65,7 +70,6 @@ function renderCmdResults(query) {
         ).join('')}</div>`;
     }
 
-    // Repos
     if (AppState.repos.length) {
         const filteredRepos = q
             ? AppState.repos.filter(r => r.name.toLowerCase().includes(q) || (r.description || '').toLowerCase().includes(q))
@@ -78,7 +82,6 @@ function renderCmdResults(query) {
         }
     }
 
-    // Releases
     if (AppState.releases.length && q) {
         const filteredReleases = AppState.releases.filter(r =>
             (r.name || r.tag_name || '').toLowerCase().includes(q) || r.repoName.toLowerCase().includes(q)
@@ -90,7 +93,11 @@ function renderCmdResults(query) {
         }
     }
 
-    if (!html) html = '<div class="cmd-group"><div class="cmd-group-title">No results</div><div class="cmd-item" style="color:var(--text-tertiary);cursor:default"><i class="fas fa-search"></i> No matches found</div></div>';
+    if (!html) {
+        html = '<div class="cmd-group"><div class="cmd-group-title">No results</div><div class="cmd-item" style="color:var(--text-tertiary);cursor:default"><i class="fas fa-search"></i> No matches found</div></div>';
+    }
 
     results.innerHTML = html;
 }
+
+window.initCommandPalette = initCommandPalette;

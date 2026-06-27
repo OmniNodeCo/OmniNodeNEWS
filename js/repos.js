@@ -24,6 +24,7 @@ function initRepoFilters() {
 function renderRepos() {
     const grid = $('#reposGrid');
     const empty = $('#reposEmpty');
+    if (!grid || !empty) return;
     const search = ($('#repoSearch').value || '').toLowerCase();
 
     let filtered = [...AppState.repos];
@@ -67,3 +68,6 @@ function renderRepos() {
         </div>`;
     }).join('');
 }
+
+window.renderRepos = renderRepos;
+window.initRepoFilters = initRepoFilters;

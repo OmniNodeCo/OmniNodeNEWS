@@ -5,21 +5,22 @@
 function renderHeatmap(events) {
     const grid = $('#heatmapGrid');
     const monthsEl = $('#heatmapMonths');
-    $('#heatmapYear').textContent = new Date().getFullYear();
+    const yearEl = $('#heatmapYear');
+    if (!grid || !monthsEl) return;
 
-    // Build date → count map from events
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
     const dateCounts = {};
     events.forEach(e => {
         const date = e.created_at.split('T')[0];
         dateCounts[date] = (dateCounts[date] || 0) + 1;
     });
 
-    // Generate 52 weeks × 7 days
     const today = new Date();
     const cells = [];
     const startDate = new Date(today);
     startDate.setDate(startDate.getDate() - 364);
-    startDate.setDate(startDate.getDate() - startDate.getDay()); // Start on Sunday
+    startDate.setDate(startDate.getDate() - startDate.getDay());
 
     const months = [];
     let lastMonth = -1;
@@ -40,7 +41,6 @@ function renderHeatmap(events) {
         const dayName = d.toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' });
         cells.push(`<div class="heatmap-cell level-${level}" title="${dayName}: ${count} event${count !== 1 ? 's' : ''}"></div>`);
 
-        // Track month labels
         const month = d.getMonth();
         if (month !== lastMonth) {
             months.push({ name: d.toLocaleDateString('en', { month: 'short' }), col: Math.floor(i / 7) + 1 });
@@ -49,9 +49,9 @@ function renderHeatmap(events) {
     }
 
     grid.innerHTML = cells.join('');
-
-    // Month labels
     monthsEl.innerHTML = months.map(m =>
         `<span class="heatmap-month-label" style="grid-column:${m.col}">${m.name}</span>`
     ).join('');
 }
+
+window.renderHeatmap = renderHeatmap;

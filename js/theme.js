@@ -8,7 +8,8 @@ function initTheme() {
     updateThemeIcon(saved);
     updateThemeButtons(saved);
 
-    $('#themeToggle').addEventListener('click', toggleTheme);
+    const toggle = $('#themeToggle');
+    if (toggle) toggle.addEventListener('click', toggleTheme);
 }
 
 function toggleTheme() {
@@ -25,7 +26,8 @@ function setTheme(theme) {
 }
 
 function updateThemeIcon(theme) {
-    $('#themeIcon').className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    const icon = $('#themeIcon');
+    if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 }
 
 function updateThemeButtons(theme) {
@@ -33,3 +35,7 @@ function updateThemeButtons(theme) {
         btn.classList.toggle('active', btn.dataset.themeSet === theme);
     });
 }
+
+window.initTheme = initTheme;
+window.toggleTheme = toggleTheme;
+window.setTheme = setTheme;

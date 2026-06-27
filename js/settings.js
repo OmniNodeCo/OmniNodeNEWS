@@ -6,6 +6,7 @@ function initSettings() {
     const overlay = $('#settingsOverlay');
     const openBtn = $('#settingsBtn');
     const closeBtn = $('#settingsClose');
+    if (!overlay || !openBtn || !closeBtn) return;
 
     openBtn.addEventListener('click', () => overlay.classList.add('open'));
     closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
@@ -47,14 +48,18 @@ function initSettings() {
 
     // Ticker toggle
     const tickerSaved = localStorage.getItem('ticker') || 'on';
-    if (tickerSaved === 'off') $('#tickerBar').classList.add('hidden-ticker');
+    if (tickerSaved === 'off') {
+        const ticker = $('#tickerBar');
+        if (ticker) ticker.classList.add('hidden-ticker');
+    }
     $$('[data-ticker]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.ticker === tickerSaved);
         btn.addEventListener('click', () => {
             $$('[data-ticker]').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             localStorage.setItem('ticker', btn.dataset.ticker);
-            $('#tickerBar').classList.toggle('hidden-ticker', btn.dataset.ticker === 'off');
+            const ticker = $('#tickerBar');
+            if (ticker) ticker.classList.toggle('hidden-ticker', btn.dataset.ticker === 'off');
         });
     });
 }
@@ -67,7 +72,9 @@ function setupAutoRefresh(minutes) {
         AppState.refreshInterval = setInterval(fetchAllData, minutes * 60 * 1000);
         startRefreshCountdown(minutes);
     } else {
-        $('#statusRefresh').innerHTML = '<i class="fas fa-clock"></i> Auto-refresh: Off';
+        const el = $('#statusRefresh');
+        if (el) el.innerHTML = '<i class="fas fa-clock"></i> Auto-refresh: Off';
+        if (AppState._countdownInterval) clearInterval(AppState._countdownInterval);
     }
 }
 
@@ -76,7 +83,8 @@ function startRefreshCountdown(minutes) {
     const update = () => {
         const m = Math.floor(secondsLeft / 60);
         const s = secondsLeft % 60;
-        $('#statusRefresh').innerHTML = `<i class="fas fa-clock"></i> Refresh: ${m}:${s.toString().padStart(2, '0')}`;
+        const el = $('#statusRefresh');
+        if (el) el.innerHTML = `<i class="fas fa-clock"></i> Refresh: ${m}:${s.toString().padStart(2, '0')}`;
         secondsLeft--;
         if (secondsLeft < 0) secondsLeft = minutes * 60;
     };
@@ -84,3 +92,5 @@ function startRefreshCountdown(minutes) {
     if (AppState._countdownInterval) clearInterval(AppState._countdownInterval);
     AppState._countdownInterval = setInterval(update, 1000);
 }
+
+window.initSettings = initSettings;

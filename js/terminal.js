@@ -4,6 +4,7 @@
 
 function updateTerminal(lines) {
     const body = $('#terminalBody');
+    if (!body) return;
     body.innerHTML = lines.map(l => {
         if (l.type === 'prompt') return `<div class="terminal-line"><span class="terminal-prompt">$</span> <span class="terminal-output">${escapeHtml(l.text)}</span></div>`;
         return `<div class="terminal-line"><span class="terminal-output ${l.type || ''}">${escapeHtml(l.text)}</span></div>`;
@@ -43,3 +44,7 @@ function updateTerminalError(msg) {
         { type: 'info', text: 'Check settings or try again later.' },
     ]);
 }
+
+window.updateTerminalLoading = updateTerminalLoading;
+window.updateTerminalSuccess = updateTerminalSuccess;
+window.updateTerminalError = updateTerminalError;
