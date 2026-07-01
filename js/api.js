@@ -44,6 +44,7 @@ async function fetchAllData() {
     safeCall('updateTerminalLoading');
 
     try {
+        // Profile — try org first, fall back to user
         try {
             AppState.profile = await fetchJSON(`${API_BASE}/orgs/${GITHUB_ORG}`);
             AppState.isOrg = true;
@@ -52,6 +53,7 @@ async function fetchAllData() {
             AppState.isOrg = false;
         }
 
+        // Repos (paginated)
         const type = AppState.isOrg ? 'orgs' : 'users';
         let repos = [], page = 1;
         while (true) {
@@ -65,6 +67,7 @@ async function fetchAllData() {
         }
         AppState.repos = repos;
 
+        // Events — fetch before contributors so fallback works
         try {
             AppState.events = await fetchJSON(
                 `${API_BASE}/${type}/${GITHUB_ORG}/events?per_page=30`
@@ -73,17 +76,21 @@ async function fetchAllData() {
             AppState.events = [];
         }
 
+        // Render sections in order — events before contributors
         safeCall('renderProfile', AppState.profile);
         safeCall('renderHeroStats', AppState.profile, repos);
         safeCall('renderRepos');
-        await safeCall('renderReleases', repos);
         safeCall('renderActivity', AppState.events);
         safeCall('renderLanguageChart', repos);
         safeCall('renderHeatmap', AppState.events);
-        await safeCall('renderContributors', repos);
-        safeCall('updateTerminalSuccess', repos, AppState.events);
         safeCall('updateTicker', AppState.events);
         safeCall('updateStatusBar', repos);
+
+        // These are async — await them
+        await safeCall('renderReleases', repos);
+        await safeCall('renderContributors', repos);
+
+        safeCall('updateTerminalSuccess', repos, AppState.events);
         updateLastRefresh();
         checkRateLimit();
 
